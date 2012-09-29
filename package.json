@@ -16,6 +16,6 @@
   },
   "scripts": {
     "start": "node src/avatar_service.js",   
-     "test": "node node_modules/jasmine-node/lib/jasmine-node/cli.js local --verbose spec"
+     "test": "node node_modules/jasmine-node/lib/jasmine-node/cli.js --verbose spec"
   }
 }
