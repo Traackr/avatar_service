@@ -38,8 +38,12 @@ var AvatarService = {
             twitter_handle : twitter,
             ttl            : ttl,
             expire_on_time : expire_on,
-            expire_on      : new Date(expire_on)
+            expire_on      : new Date(expire_on).toISOString()
          };
+
+         // Add avatar to cache
+         redis_client.set(key, JSON.stringify(avatar));
+         
          // Update Twitter info (async)
          AvatarService.updateTwitter(id, key, avatar);
 
@@ -66,7 +70,7 @@ var AvatarService = {
             big_avatar_url_http      : url_http,
             ttl                      : ttl,
             expire_on_time           : expire_on,
-            expire_on                : new Date(expire_on)
+            expire_on                : new Date(expire_on).toISOString()
          };
 
          // Add avatar to cache
@@ -108,12 +112,12 @@ var AvatarService = {
                 if ( size == 'o' && avatar.original_avatar_url_http )
                     redirect_url = avatar.original_avatar_url_http
                 if ( redirect_url ) {
-                    successCallback(avatar, redirect_url)
+                    if ( successCallback) successCallback(avatar, redirect_url)
                     //res.writeHead(302, { 'Location': redirect_url });
                     //res.end();
                 }
                 else {
-                    errorCallback();
+                    if ( errorCallback ) errorCallback();
                     //res.writeHead(404);
                     //res.end();
                 }
@@ -136,7 +140,7 @@ var AvatarService = {
             function(err, data) {
                 if ( err ) {
                     console.log('Error calling Twitter.');
-                    console.log('Putting entry nack on the queue: ' + id);
+                    console.log('Putting entry back on the queue: ' + id);
                     // Push to the right on the queueu
                     redis_client.rpush('avatar_refresh_queue', id);
                 }
@@ -152,7 +156,7 @@ var AvatarService = {
                     // Calculate expire date
                     var exp = new Date().getTime() + (avatar.ttl * 60 * 1000); // milliseconds
                     avatar.expire_on_time = exp;
-                    avatar.expire_on = new Date(exp);
+                    avatar.expire_on = new Date(exp).toISOString();
                     console.log('Entry: ' + key + ' - Set expire on: ' + new Date(exp));
                     // Add avatar to cache
                     redis_client.set(key, JSON.stringify(avatar));
@@ -191,6 +195,10 @@ var AvatarService = {
                 });
             }
         });
+    },
+
+    clearRefreshQueue: function() {
+        redis_client.ltrim('avatar_refresh_queue', 1, 0)
     }
 
 } // End AvatarService object

@@ -3,4 +3,3 @@
  */
 
 module.exports.AvatarService = require(__dirname + '/avatar_service').service;
-
