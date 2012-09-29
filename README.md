@@ -49,10 +49,12 @@ Returns image for specified item. If successful, this will cause an HTTP redirec
 After downloading the latest version of the Avatar Service, you can install the node.js dependencies (one time only) and run the service with:
 
     npm install  
-    node avatar_service
+    node src/avatar_service
 
 
 ## Configuration
+
+Copy the file `src/config/config_sample.js` to `src/config/config_local.js` and edit according to your settings.
 
 
 ## Leveraging Apache/Nginx ##
