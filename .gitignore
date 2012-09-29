@@ -1,5 +1,4 @@
 
 src/config/config_local.js
-src/config/config_heroku.js
 node_modules
 nbproject
