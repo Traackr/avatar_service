@@ -1,0 +1,21 @@
+{
+  "name": "avatar_service",
+  "description": "Avatar service",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+         "express": "3.x",
+        "ntwitter": "*",
+           "redis": "*",
+            "cron": "*",
+    "jasmine-node": "*"
+  },
+  "engines": {
+    "node": "0.8.x",
+     "npm": "1.1.x"
+  },
+  "scripts": {
+    "start": "node src/avatar_service.js",   
+     "test": "node node_modules/jasmine-node/lib/jasmine-node/cli.js local --verbose spec"
+  }
+}

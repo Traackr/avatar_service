@@ -1,0 +1,1 @@
+web: node src/avatar_service.js heroku
